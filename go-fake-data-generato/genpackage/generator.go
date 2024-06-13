@@ -4,14 +4,32 @@ import (
 	"fmt"
 	"math/rand"
 	"time"
-
-	"github.com/bxcodec/faker/v3"
 )
 
 type Info struct {
 	FirstName   string `faker:"firstName,unique"`
 	LastName    string `faker:"lastName,unique"`
 	PhoneNumber string `faker:"phoneNumber,unique"`
+}
+
+var FirstNameList = []string{
+	"Alice", "Bob", "Charlie", "Diana", "Edward",
+	"Fiona", "George", "Hannah", "Ian", "Julia",
+}
+
+var LastNameList = []string{
+	"Smith", "Johnson", "Williams", "Jones", "Brown",
+	"Davis", "Miller", "Wilson", "Moore", "Taylor",
+}
+
+//generateFirstName generate a random firstname
+func generateFirstName() string {
+	return FirstNameList[rand.Intn(len(FirstNameList))]
+}
+
+//generateFirstName generate a random lastname
+func generateLastName() string {
+	return LastNameList[rand.Intn(len(LastNameList))]
 }
 
 // generatePhoneNumber generates a random phone number with the specified format
@@ -34,13 +52,11 @@ func generatePhoneNumber() string {
 func GenerateInfo(n int) []Info {
 	var infos []Info
 	for i := 0; i < n; i++ {
-		x := Info{}
-		err := faker.FakeData(&x)
-		if err != nil {
-			fmt.Println(err)
+		x := Info{
+			FirstName:   generateFirstName(),
+			LastName:    generateLastName(),
+			PhoneNumber: generatePhoneNumber(),
 		}
-		// Generate a random phone number with the specified format
-		x.PhoneNumber = generatePhoneNumber()
 		infos = append(infos, x)
 	}
 	return infos
